@@ -1,10 +1,11 @@
 // frontend/src/pages/Dashboard.tsx
-import React, { useEffect, useState, useCallback } from 'react'; // Ajout de useState et useCallback
+import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import TaskForm from '../components/TaskForm'; // Importe le formulaire de tâche
-import TaskList from '../components/TaskList'; // Importe la liste des tâches
+import TaskForm from '../components/TaskForm';
+import TaskList from '../components/TaskList';
 
+// Reste la même interface Task que précédemment
 interface Task {
   _id: string;
   title: string;
@@ -13,18 +14,17 @@ interface Task {
   dueDate?: string;
   createdAt: string;
   updatedAt: string;
-  user: string; // L'ID de l'utilisateur
+  user: string;
 }
 
 const Dashboard: React.FC = () => {
-  const [tasks, setTasks] = useState<Task[]>([]); // État pour stocker les tâches
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [loadingTasks, setLoadingTasks] = useState(true);
   const [tasksError, setTasksError] = useState<string | null>(null);
 
   const navigate = useNavigate();
   const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
 
-  // Fonction pour récupérer les tâches
   const fetchTasks = useCallback(async () => {
     setLoadingTasks(true);
     setTasksError(null);
@@ -32,7 +32,7 @@ const Dashboard: React.FC = () => {
     const token = user.token;
 
     if (!token) {
-      navigate('/login'); // Redirige si pas de token
+      navigate('/login');
       return;
     }
 
@@ -44,8 +44,7 @@ const Dashboard: React.FC = () => {
       });
       setTasks(response.data);
     } catch (err: any) {
-      if (err.response && err.response.status === 401) {
-        // Token expiré ou invalide
+      if (axios.isAxiosError(err) && err.response && err.response.status === 401) {
         localStorage.removeItem('user');
         navigate('/login');
       } else {
@@ -56,15 +55,14 @@ const Dashboard: React.FC = () => {
     }
   }, [API_URL, navigate]);
 
-  // Effet pour la protection de route et le chargement initial des tâches
   useEffect(() => {
     const user = localStorage.getItem('user');
     if (!user) {
       navigate('/login');
     } else {
-      fetchTasks(); // Charge les tâches si l'utilisateur est connecté
+      fetchTasks();
     }
-  }, [navigate, fetchTasks]); // fetchTasks est une dépendance car c'est une fonction de rappel
+  }, [navigate, fetchTasks]);
 
   const handleLogout = () => {
     localStorage.removeItem('user');
@@ -81,7 +79,7 @@ const Dashboard: React.FC = () => {
         <button onClick={handleLogout} className="btn btn-danger">Déconnexion</button>
       </div>
 
-      <TaskForm onTaskAdded={fetchTasks} /> {/* Passer la fonction de rechargement des tâches */}
+      <TaskForm onTaskAdded={fetchTasks} />
 
       {loadingTasks ? (
         <div className="d-flex justify-content-center mt-5">
@@ -92,7 +90,8 @@ const Dashboard: React.FC = () => {
       ) : tasksError ? (
         <div className="alert alert-danger mt-4" role="alert">{tasksError}</div>
       ) : (
-        <TaskList tasks={tasks} />
+        // Passe les fonctions de rappel à TaskList
+        <TaskList tasks={tasks} onTaskUpdated={fetchTasks} onTaskDeleted={fetchTasks} />
       )}
     </div>
   );

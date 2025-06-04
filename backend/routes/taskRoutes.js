@@ -1,14 +1,15 @@
 // backend/routes/taskRoutes.js
 const express = require('express');
 const router = express.Router();
-const { getTasks, createTask } = require('../controllers/taskController');
-const protect = require('../middleware/authMiddleware'); // Importe le middleware de protection
+const { getTasks, createTask, updateTask, deleteTask } = require('../controllers/taskController');
+const protect = require('../middleware/authMiddleware');
 
-// Toutes les routes définies ci-dessous utiliseront le middleware 'protect'
+// Routes pour obtenir toutes les tâches et créer une nouvelle tâche
 router.route('/').get(protect, getTasks).post(protect, createTask);
 
-// Vous pouvez aussi les écrire séparément :
-// router.get('/', protect, getTasks);
-// router.post('/', protect, createTask);
+// Routes pour modifier et supprimer une tâche spécifique par son ID
+router.route('/:id')
+  .put(protect, updateTask)
+  .delete(protect, deleteTask);
 
 module.exports = router;

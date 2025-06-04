@@ -42,7 +42,7 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="container d-flex justify-content-center align-items-center min-vh-100 bg-light">
+    <div className="container d-flex justify-content-center align-items-center py-5">
       <div className="card p-4 shadow-lg w-100" style={{ maxWidth: '450px', borderRadius: '10px' }}>
         <div className="text-center mb-4">
           <h1 className="display-5 text-primary fw-bold">Ma Super To-Do App</h1>

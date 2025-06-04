@@ -1,13 +1,14 @@
+// frontend/src/App.tsx
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
+import Navbar from './components/Navbar'; // Importe la Navbar
 
-// Layout privé avec Outlet
-const PrivateRoute: React.FC = () => {
+const PrivateRoute: React.FC<{ children: JSX.Element }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -25,24 +26,29 @@ const PrivateRoute: React.FC = () => {
     );
   }
 
-  return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
+  return isAuthenticated ? children : <Navigate to="/login" replace />;
 };
 
 function App() {
   return (
     <Router>
-      <div className="App">
-        <Routes>
-          <Route path="/" element={<Navigate to="/login" replace />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-
-          {/* Toutes les routes protégées passent par PrivateRoute */}
-          <Route element={<PrivateRoute />}>
-            <Route path="/dashboard" element={<Dashboard />} />
-            {/* Tu peux ajouter d'autres routes protégées ici */}
-          </Route>
-        </Routes>
+      <div className="App d-flex flex-column min-vh-100"> {/* Utilise flexbox pour le layout */}
+        <Navbar /> {/* Inclut la Navbar ici */}
+        <main className="flex-grow-1"> {/* Permet au contenu de prendre l'espace restant */}
+          <Routes>
+            <Route path="/" element={<Navigate to="/login" replace />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+            <Route
+              path="/dashboard"
+              element={
+                <PrivateRoute>
+                  <Dashboard />
+                </PrivateRoute>
+              }
+            />
+          </Routes>
+        </main>
       </div>
     </Router>
   );

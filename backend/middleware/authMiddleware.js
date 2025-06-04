@@ -5,22 +5,20 @@ const User = require('../models/User');
 const protect = async (req, res, next) => {
   let token;
 
-  // Le token est généralement envoyé dans l'en-tête Authorization comme 'Bearer TOKEN'
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     try {
-      // Extraire le token
       token = req.headers.authorization.split(' ')[1];
-
-      // Vérifier le token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      // Récupérer l'utilisateur du token et l'ajouter à la requête
-      // Le .select('-password') exclut le mot de passe de l'objet utilisateur retourné
+      // Assurez-vous que l'utilisateur est bien trouvé et attaché
       req.user = await User.findById(decoded.id).select('-password');
+      if (!req.user) { // Ajout de cette vérification
+        return res.status(401).json({ message: 'Non autorisé, utilisateur non trouvé' });
+      }
 
-      next(); // Passer au prochain middleware/route
+      next();
     } catch (error) {
-      console.error(error);
+      console.error(error); // Affiche l'erreur ici pour le débogage
       return res.status(401).json({ message: 'Non autorisé, token invalide' });
     }
   }
