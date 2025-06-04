@@ -1,30 +1,28 @@
 // backend/server.js
 const express = require('express');
-const dotenv = require('dotenv').config(); // Charge les variables d'environnement
+const dotenv = require('dotenv').config();
 const cors = require('cors');
-const connectDB = require('./config/db'); // Importe la fonction de connexion à la DB
+const connectDB = require('./config/db');
+const { errorHandler } = require('./middleware/errorMiddleware'); // Importe le middleware d'erreur
 
 // Connecte à la base de données
 connectDB();
 
 const app = express();
-const port = process.env.PORT || 5000; // Utilise le port défini dans .env ou 5000 par défaut
+const port = process.env.PORT || 5000;
 
-// Middlewares pour parser le JSON et les données d'URL
-app.use(express.json()); // Permet de recevoir du JSON dans les requêtes (body-parser pour JSON)
-app.use(express.urlencoded({ extended: false })); // Permet de recevoir des données encodées dans l'URL
-
-// Middleware CORS pour autoriser les requêtes du frontend
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
-// --- Routes de base (à étendre plus tard) ---
-app.get('/', (req, res) => {
-  res.status(200).json({ message: 'Bienvenue sur l\'API To-Do List MERN !' });
-});
-
-// Exemple de route pour les tâches (sera remplacé par un routeur dédié)
+// --- Routes API ---
+// Routes utilisateurs
+app.use('/api/users', require('./routes/userRoutes'));
+// Routes tâches (on utilisera l'authentification ici plus tard)
 app.use('/api/tasks', require('./routes/taskRoutes'));
 
+// Middleware de gestion d'erreurs (doit être le dernier middleware)
+app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(`Serveur démarré sur le port ${port}`);

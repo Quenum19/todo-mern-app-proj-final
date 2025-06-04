@@ -12,21 +12,21 @@ const taskSchema = mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['pending', 'completed'], // Statuts possibles
+      enum: ['pending', 'completed'],
       default: 'pending',
     },
-    dueDate: { // Nouvelle propriété pour l'échéance
+    dueDate: {
       type: Date,
-      required: false, // Pas obligatoire
+      required: false,
     },
-    user: { // Pour lier la tâche à un utilisateur (important pour l'authentification)
+    user: { // TRÈS IMPORTANT : Lier la tâche à un utilisateur
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      ref: 'User', // Fait référence au modèle User (que nous créerons plus tard)
+      required: true, // L'utilisateur est maintenant requis
+      ref: 'User',
     },
   },
   {
-    timestamps: true, // Ajoute createdAt et updatedAt automatiquement
+    timestamps: true,
   }
 );
 
