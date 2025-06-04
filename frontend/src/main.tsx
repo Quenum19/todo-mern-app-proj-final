@@ -6,9 +6,11 @@ import 'bootstrap/dist/css/bootstrap.min.css'; // Assure-toi que Bootstrap est t
 
 // Font Awesome Configuration
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faCheckCircle, faTrash, faEdit, faPlusCircle, faTimesCircle, faSignInAlt, faUserPlus, faSignOutAlt, faTasks } from '@fortawesome/free-solid-svg-icons'; // Importe les icônes nécessaires
+// ...
+import { faCheckCircle, faTrash, faEdit, faPlusCircle, faTimesCircle, faSignInAlt, faUserPlus, faSignOutAlt, faTasks, faSearch, faTimes } from '@fortawesome/free-solid-svg-icons'; // Ajout de faSearch et faTimes
 
-library.add(faCheckCircle, faTrash, faEdit, faPlusCircle, faTimesCircle, faSignInAlt, faUserPlus, faSignOutAlt, faTasks);
+library.add(faCheckCircle, faTrash, faEdit, faPlusCircle, faTimesCircle, faSignInAlt, faUserPlus, faSignOutAlt, faTasks, faSearch, faTimes);
+// ...
 // ^ Ajoute les icônes que tu prévois d'utiliser
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

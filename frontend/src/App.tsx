@@ -6,49 +6,49 @@ import React, { useState, useEffect } from 'react';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
-import Navbar from './components/Navbar'; // Importe la Navbar
+import Navbar from './components/Navbar';
 
 const PrivateRoute: React.FC<{ children: JSX.Element }> = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  // Dépend directement du localStorage pour la vérification immédiate
+  const user = localStorage.getItem('user');
+  const isAuthenticated = !!user;
 
-  useEffect(() => {
-    const user = localStorage.getItem('user');
-    setIsAuthenticated(!!user);
-  }, []);
-
-  if (isAuthenticated === null) {
-    return (
-      <div className="d-flex justify-content-center align-items-center min-vh-100">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Chargement...</span>
-        </div>
-      </div>
-    );
+  if (!isAuthenticated) {
+    // Redirige immédiatement si non authentifié
+    return <Navigate to="/login" replace />;
   }
 
-  return isAuthenticated ? children : <Navigate to="/login" replace />;
+  // Si authentifié, rend les enfants
+  return children;
 };
 
 function App() {
   return (
     <Router>
-      <div className="App d-flex flex-column min-vh-100"> {/* Utilise flexbox pour le layout */}
-        <Navbar /> {/* Inclut la Navbar ici */}
-        <main className="flex-grow-1"> {/* Permet au contenu de prendre l'espace restant */}
-          <Routes>
-            <Route path="/" element={<Navigate to="/login" replace />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
-            <Route
-              path="/dashboard"
-              element={
-                <PrivateRoute>
-                  <Dashboard />
-                </PrivateRoute>
-              }
-            />
-          </Routes>
-        </main>
+      <div className="App d-flex flex-column min-vh-100">
+        <Routes>
+          {/* Routes pour l'authentification (sans Navbar) */}
+          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+
+          {/* Routes protégées (avec Navbar) */}
+          <Route
+            path="/dashboard"
+            element={
+              <>
+                <Navbar /> {/* La Navbar s'affiche ici */}
+                <main className="flex-grow-1">
+                  <PrivateRoute>
+                    <Dashboard />
+                  </PrivateRoute>
+                </main>
+              </>
+            }
+          />
+          {/* Optionnel: Gérer les routes inconnues */}
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        </Routes>
       </div>
     </Router>
   );
