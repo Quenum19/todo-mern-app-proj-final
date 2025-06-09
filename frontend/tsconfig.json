@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "jsx": "react-jsx",           // important
+    "jsx": "react-jsx",
     "lib": ["dom", "dom.iterable", "esnext"], // s'assurer que DOM est inclus
     "types": ["react", "react-dom"],
     "module": "esnext",
