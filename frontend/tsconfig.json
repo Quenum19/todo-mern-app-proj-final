@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "jsx": "react-jsx", // Ou "react" si tu utilises React 17 ou moins et la syntaxe classique
+    "lib": ["DOM", "DOM.Iterable", "ESNext"], // Assure-toi que "DOM" est inclus
     "types": ["react", "react-dom"],
     "module": "esnext",
     "moduleResolution": "node",
