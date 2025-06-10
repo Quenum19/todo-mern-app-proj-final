@@ -1,4 +1,5 @@
 // frontend/src/App.tsx
+/** @jsxImportSource react */
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
