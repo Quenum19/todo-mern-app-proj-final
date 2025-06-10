@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
-    "jsx": "react-jsx", // Ou "react" si tu utilises React 17 ou moins et la syntaxe classique
-    "lib": ["DOM", "DOM.Iterable", "ESNext"], // Assure-toi que "DOM" est inclus
-    "types": ["react", "react-dom"],
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",  // Ajoutez cette ligne
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "types": ["react", "react-dom", "vite/client"],  // Ajoutez vite/client
     "module": "esnext",
     "moduleResolution": "node",
     "target": "es6",
@@ -11,6 +12,6 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src"],                // ✅ très important
+  "include": ["src"],
   "exclude": ["node_modules"]
 }
