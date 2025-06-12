@@ -9,11 +9,13 @@ const { errorHandler } = require('./middleware/errorMiddleware'); // Importe le 
 connectDB();
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cors());
+app.use(cors({
+  origin: ['http://localhost:5173', 'https://mon-todo-mern-app.vercel.app']
+}));
 
 // --- Routes API ---
 // Routes utilisateurs
