@@ -28,7 +28,7 @@ const Login = () => {
         setError(null);
         setLoading(true);
         try {
-            const response = yield axios.post(`${API_URL}/users/login`, { email, password });
+            const response = yield axios.post(`${API_URL}/api/users/login`, { email, password });
             localStorage.setItem('user', JSON.stringify(response.data));
             navigate('/dashboard');
         }

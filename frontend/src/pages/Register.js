@@ -36,7 +36,7 @@ const Register = () => {
             return;
         }
         try {
-            const response = yield axios.post(`${API_URL}/users/register`, { email, password });
+            const response = yield axios.post(`${API_URL}/api/users/register`, { email, password });
             setSuccess('Inscription réussie ! Vous pouvez maintenant vous connecter.');
             setEmail('');
             setPassword('');
