@@ -20,7 +20,7 @@ const Login: React.FC = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post(`${API_URL}/users/login`, { email, password });
+      const response = await axios.post(`${API_URL}/api/users/login`, { email, password });
       localStorage.setItem('user', JSON.stringify(response.data));
       navigate('/dashboard');
     } catch (err: any) {
@@ -29,6 +29,8 @@ const Login: React.FC = () => {
       setLoading(false);
     }
   };
+  
+  
 
   return (
     <div className="auth-page" style={{
