@@ -1,5 +1,8 @@
 {
   "rewrites": [
-    { "source": "/(.*)", "destination": "/" }
+    {
+      "source": "/api/:path*",
+      "destination": "https://mon-todo-mern-app.onrender.com/api/:path*"
+    }
   ]
 }

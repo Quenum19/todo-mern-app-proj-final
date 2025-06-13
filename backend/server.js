@@ -9,13 +9,22 @@ const { errorHandler } = require('./middleware/errorMiddleware'); // Importe le 
 connectDB();
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cors({
-  origin: ['http://localhost:5173', 'https://mon-todo-mern-app.vercel.app']
-}));
+// Configurer CORS pour accepter les requêtes depuis Vercel
+const corsOptions = {
+  origin: [
+    'http://localhost:5173', // développement local
+    'https://mon-todo-mern-app.vercel.app' // votre domaine Vercel
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+};
+
+app.use(cors(corsOptions));
 
 // --- Routes API ---
 // Routes utilisateurs
